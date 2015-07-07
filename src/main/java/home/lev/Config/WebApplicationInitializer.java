@@ -16,6 +16,5 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
         ServletRegistration.Dynamic dynamic = servletContext.addServlet("dispatcher",new DispatcherServlet(ctx));
         dynamic.addMapping("/");
         dynamic.setLoadOnStartup(1);
-        
     }
 }

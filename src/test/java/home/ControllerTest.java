@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -19,13 +18,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import home.lev.Config.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = home.lev.Config.ApplConfig.class)
 public class ControllerTest {
 
+    private final String URL="/student/";
+    private final String JSON_TYPE ="application/json;charset=UTF-8";
     @Autowired
     WebApplicationContext wac;
 
@@ -39,19 +39,29 @@ public class ControllerTest {
     @Test
     public void pathName() throws Exception {
         String name= "Vasia";
-        this.mockMVC.perform(get("/student/"+name) )
-        .andExpect(status().isOk())
-        .andExpect(content().contentType("application/json;charset=UTF-8"))
-        .andExpect(jsonPath("$.name").value(name))
+        this.mockMVC.perform(get(URL+name) )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(JSON_TYPE))
+                .andExpect(jsonPath("$.name").value(name))
         ;
     }
 
     @Test
     public void noneName() throws Exception {
-        this.mockMVC.perform(get("/student/"))
+        this.mockMVC.perform(get(URL))
                 .andExpect(status().isOk())
-        .andExpect(content().contentType("application/json;charset=UTF-8"))
-        .andExpect(jsonPath("$.name").value("noneName"))
+                .andExpect(content().contentType(JSON_TYPE))
+                .andExpect(jsonPath("$.name").value("noneName"))
+        ;
+
+    }
+    @Test
+    public void requestParam() throws Exception {
+        String name="Pet'ka";
+        this.mockMVC.perform(get(URL).param("name",name))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(JSON_TYPE))
+        .andExpect(jsonPath("$.name").value(name))
         ;
 
     }
