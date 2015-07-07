@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import home.lev.Config.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,8 +37,22 @@ public class ControllerTest {
     }
 
     @Test
-    public void MyTest() throws Exception {
+    public void pathName() throws Exception {
+        String name= "Vasia";
+        this.mockMVC.perform(get("/student/"+name) )
+        .andExpect(status().isOk())
+        .andExpect(content().contentType("application/json;charset=UTF-8"))
+        .andExpect(jsonPath("$.name").value(name))
+        ;
+    }
 
-        this.mockMVC.perform(get("/student").accept(MediaType.APPLICATION_JSON) );
+    @Test
+    public void noneName() throws Exception {
+        this.mockMVC.perform(get("/student/"))
+                .andExpect(status().isOk())
+        .andExpect(content().contentType("application/json;charset=UTF-8"))
+        .andExpect(jsonPath("$.name").value("noneName"))
+        ;
+
     }
 }
