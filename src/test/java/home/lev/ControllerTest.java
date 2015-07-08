@@ -1,4 +1,4 @@
-package home;
+package home.lev;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class ControllerTest {
     @Test
     public void pathName() throws Exception {
         String name= "Vasia";
-        this.mockMVC.perform(get(URL+name) )
+        this.mockMVC.perform(get(URL+"{name}",name) )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(JSON_TYPE))
                 .andExpect(jsonPath("$.name").value(name))
@@ -48,10 +48,12 @@ public class ControllerTest {
 
     @Test
     public void noneName() throws Exception {
+        String name="noneName";
         this.mockMVC.perform(get(URL))
+
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(JSON_TYPE))
-                .andExpect(jsonPath("$.name").value("noneName"))
+                .andExpect(jsonPath("$.name").value(name))
         ;
 
     }
@@ -59,9 +61,9 @@ public class ControllerTest {
     public void requestParam() throws Exception {
         String name="Pet'ka";
         this.mockMVC.perform(get(URL).param("name",name))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(JSON_TYPE))
-        .andExpect(jsonPath("$.name").value(name))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(JSON_TYPE))
+                .andExpect(jsonPath("$.name").value(name))
         ;
 
     }
