@@ -14,14 +14,32 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
+/*
+    http://spring.io/guides/gs/uploading-files/
+    http://stackoverflow.com/questions/27050018/spring-file-upload-getting-expected-multiparthttpservletrequest-is-a-multipar
+
+<html>
+<body>
+<form method="POST" enctype="multipart/form-data"
+		action="http://localhost:8080/upload">
+		File to upload: <input type="file" name="fileName"><br /> Name: <input
+			type="text" name="name"><br /> <br /> <input type="submit"
+			value="Upload"> Press here to upload the file!
+	</form>
+</body>
+</html>
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = ApplConfig.class)
 public class UploadFileTest {
 
+    private String UPLOAD_ADDRESS="/upload";
     @Autowired
     WebApplicationContext webApplicationContext;
 
@@ -35,20 +53,52 @@ public class UploadFileTest {
     @Test
     public void fileUploadTest() throws Exception {
 
-        String sentName = "file";
+        String sentName = "fileName";
         String originalName="originalName";
         String fileContext = "MY_UPLOADED_FILE";
 
-//----------------WHY can not change "sentName" field?-----------
         MockMultipartFile file = new MockMultipartFile(sentName, originalName, null, fileContext.getBytes());
 
-        this.mockMvc.perform(fileUpload("/upload/").file(file))
+        this.mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name",sentName))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("sentName", sentName))
-                .andExpect(model().attribute("originalName", originalName))
-                .andExpect(model().attribute("fileContext",fileContext))
-
+                .andExpect(content().string("uploaded success!"+" name:"+sentName))
+                .andDo(print())
+        ;
+    }
+    @Test
+    public void nullUpload() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("fileName","".getBytes());
+        mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name", ""))
+                .andExpect(status().isOk())
+                .andExpect(content().string("file is big or empty"))
+                .andDo(print())
         ;
     }
 
+    @Test
+    public void maxSizelimit() throws Exception {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        while(stringBuilder.toString().getBytes().length<100){
+            stringBuilder.append("1");
+        }
+        System.out.println("out="+stringBuilder.toString()+" size="+stringBuilder.toString().getBytes().length);
+        MockMultipartFile file = new MockMultipartFile("fileName",stringBuilder.toString().getBytes());
+        mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name",""))
+                .andExpect(status().isOk())
+                .andExpect(content().string("file is big or empty"))
+        ;
+    }
+
+    @Test
+    public void getResponse() throws Exception {
+        this.mockMvc.perform(get(UPLOAD_ADDRESS))
+                .andExpect(status().isOk())
+                .andExpect(content().string("please upload file to the same address"))
+                .andDo(print())
+
+        ;
+
+    }
 }
+
