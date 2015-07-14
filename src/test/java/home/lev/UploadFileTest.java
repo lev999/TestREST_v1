@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -59,11 +60,12 @@ public class UploadFileTest {
 
         MockMultipartFile file = new MockMultipartFile(sentName, originalName, null, fileContext.getBytes());
 
-        this.mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name",sentName))
+        MvcResult mvcResult= this.mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name",sentName))
                 .andExpect(status().isOk())
                 .andExpect(content().string("uploaded success!"+" name:"+sentName))
                 .andDo(print())
-        ;
+                .andExpect(model().attributeHasErrors())
+        .andReturn();
     }
     @Test
     public void nullUpload() throws Exception {
