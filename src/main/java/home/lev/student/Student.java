@@ -1,4 +1,4 @@
-package home.lev;
+package home.lev.student;
 
 public class Student {
     private String name;

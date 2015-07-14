@@ -8,4 +8,5 @@
 
     <context:component-scan base-package="home.lev"/>
     <mvc:annotation-driven/>
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
     </beans>

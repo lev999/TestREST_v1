@@ -1,4 +1,4 @@
-package home.lev;
+package home.lev.student;
 
 import org.junit.Before;
 import org.junit.Test;

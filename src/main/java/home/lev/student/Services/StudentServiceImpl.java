@@ -1,6 +1,6 @@
-package home.lev.Services;
+package home.lev.student.Services;
 
-import home.lev.Student;
+import home.lev.student.Student;
 import org.springframework.stereotype.Component;
 
 @Component

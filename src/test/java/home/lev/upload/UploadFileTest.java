@@ -1,4 +1,4 @@
-package home.lev;
+package home.lev.upload;
 
 import home.lev.Config.ApplConfig;
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		action="http://localhost:8080/upload">
 		File to upload: <input type="file" name="fileName"><br /> Name: <input
 			type="text" name="name"><br /> <br /> <input type="submit"
-			value="Upload"> Press here to upload the file!
+			value="upload"> Press here to upload the file!
 	</form>
 </body>
 </html>
