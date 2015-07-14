@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = home.lev.Config.ApplConfig.class)
+//@ContextConfiguration(classes = home.lev.Config.ApplConfig.class)
+@ContextConfiguration("file:src/main/webapp/WEB-INF/servlet-context.xml")
 public class ControllerTest {
 
     private final String URL="/student/";

@@ -37,7 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = ApplConfig.class)
+//@ContextConfiguration(classes = ApplConfig.class)
+@ContextConfiguration("file:src/main/webapp/WEB-INF/servlet-context.xml")
 public class UploadFileTest {
 
     private String UPLOAD_ADDRESS="/upload";
@@ -60,11 +61,10 @@ public class UploadFileTest {
 
         MockMultipartFile file = new MockMultipartFile(sentName, originalName, null, fileContext.getBytes());
 
-        MvcResult mvcResult= this.mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name",sentName))
+        MvcResult mvcResult= this.mockMvc.perform(fileUpload(UPLOAD_ADDRESS).file(file).param("name", sentName))
                 .andExpect(status().isOk())
-                .andExpect(content().string("uploaded success!"+" name:"+sentName))
+                .andExpect(content().string("uploaded success!" + " name:" + sentName))
                 .andDo(print())
-                .andExpect(model().attributeHasErrors())
         .andReturn();
     }
     @Test

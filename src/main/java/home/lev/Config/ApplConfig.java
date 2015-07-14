@@ -7,11 +7,11 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@Configuration
-@ComponentScan("home.lev")
-@EnableWebMvc
+//@Configuration
+//@ComponentScan("home.lev")
+//@EnableWebMvc
 public class ApplConfig {
-    @Bean
+//    @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         return multipartResolver;
