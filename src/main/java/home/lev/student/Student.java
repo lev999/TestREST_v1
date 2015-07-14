@@ -1,5 +1,6 @@
 package home.lev.student;
 
+
 public class Student {
     private String name;
     private int tel;
@@ -24,4 +25,6 @@ public class Student {
     public void setTel(int tel) {
         this.tel = tel;
     }
+
+
 }

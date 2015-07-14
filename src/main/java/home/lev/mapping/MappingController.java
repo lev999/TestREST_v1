@@ -1,10 +1,8 @@
 package home.lev.mapping;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,8 +33,33 @@ public class MappingController {
     public String withHeader(){
         return "with header";
     }
+
     @RequestMapping(value = "header",method = RequestMethod.GET, headers ={"!headerFoo","MyHeader"} )
     public String noHeaders(){
         return "no header";
+    }
+
+    @RequestMapping(
+            value = "jsonPost",
+            method = RequestMethod.POST,
+            produces = MediaType.TEXT_PLAIN_VALUE
+    )
+    public String jsonPost(@RequestBody Kot kot){
+        return kot.toString();
+    }
+
+    @RequestMapping(value = "produces",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Kot getJson(){
+        return new Kot();
+    }
+
+    @RequestMapping(value = "produces",produces = MediaType.APPLICATION_XML_VALUE)
+    public Kot getXml(){
+        return new Kot();
+    }
+
+    @RequestMapping(value = "produces",produces = MediaType.TEXT_PLAIN_VALUE)
+    public String JsonGetAsText(){
+        return (new Kot()).toString();
     }
 }
