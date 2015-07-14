@@ -1,5 +1,6 @@
 package home.lev.simple;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +20,6 @@ public class SimpleControllerTest2 {
     @Test
     public void getResponse() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new SimpleController())
-
                 .build();
         mockMvc.perform(get("/hello").accept(MediaType.TEXT_PLAIN))
                 .andDo(print())
