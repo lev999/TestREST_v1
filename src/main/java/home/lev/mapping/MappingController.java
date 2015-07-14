@@ -21,4 +21,22 @@ public class MappingController {
     public String mappedByWildcard(HttpServletRequest request){
         return request.getRequestURI();
     }
+    @RequestMapping(value = "param",method = RequestMethod.GET, params = "foo")
+    public  String requestParam(){
+        return "with param";
+    }
+
+    @RequestMapping(value = "param",method = RequestMethod.GET, params = "!foo")
+    public String noParam(){
+        return "no param";
+    }
+
+    @RequestMapping(value = "header",method = RequestMethod.GET, headers = "headerFoo")
+    public String withHeader(){
+        return "with header";
+    }
+    @RequestMapping(value = "header",method = RequestMethod.GET, headers ={"!headerFoo","MyHeader"} )
+    public String noHeaders(){
+        return "no header";
+    }
 }
