@@ -72,7 +72,7 @@ public class MappingTest extends BasicTest {
     public void jsonPost() throws Exception {
         String jsonString="{\"name\": \"Vaska\", \"length\": 4556}";
         mockMvc.perform(
-                post(URL + "jsonPost")
+                post(URL + "consumes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString.getBytes())
         )
@@ -91,7 +91,6 @@ public class MappingTest extends BasicTest {
     @Test
     public void getJson() throws Exception {
         mockMvc.perform(get(URL + "produces").accept(MediaType.APPLICATION_JSON))
-
                 .andExpect(jsonPath("$.name").value("Mursik"))
                 .andExpect(jsonPath("$.length").value(1000000))
                 ;
@@ -99,9 +98,10 @@ public class MappingTest extends BasicTest {
 
     @Test
     public void getXml() throws Exception {
-        mockMvc.perform(get(URL+"produces").accept(MediaType.APPLICATION_XML_VALUE))
+        MvcResult result = mockMvc.perform(get(URL + "produces").accept(MediaType.APPLICATION_XML_VALUE))
          .andExpect(xpath("kot/name").string("Mursik"))
         .andExpect(xpath("kot/length").string("1000000"))
+        .andReturn()
         ;
     }
 

@@ -40,8 +40,9 @@ public class MappingController {
     }
 
     @RequestMapping(
-            value = "jsonPost",
+            value = "consumes",
             method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE
     )
     public String jsonPost(@RequestBody Kot kot){
