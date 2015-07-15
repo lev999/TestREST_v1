@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,7 +31,7 @@ public class DataRequestTest {
 
     @Before
     public void setUp(){
-         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .alwaysDo(print())
                 .alwaysExpect(status().isOk())
                 .build();
@@ -40,30 +41,30 @@ public class DataRequestTest {
     public void oneParamRequest() throws Exception {
         mockMvc.perform(get(URL+"oneParamRequest").param("oneParam","one param it's me"))
                 .andExpect(content().string("one param it's me"))
-                ;
+        ;
     }
     @Test
     public void manyParamRequest() throws Exception {
 
         mockMvc.perform(get(URL+"manyParamRequest")
-        .param("one", "1")
+                        .param("one", "1")
                         .param("two", "2")
                         .param("three", "3")
         )
                 .andExpect(content().string("123"))
-                ;
+        ;
     }
     @Test
     public void pathParamRequest() throws Exception {
         mockMvc.perform(get(URL + "pathParamRequest/MyAss/Kiss"))
                 .andExpect(content().string("Kiss MyAss"))
-                ;
+        ;
     }
 
     @Test
     public void matrixRequest() throws Exception {
         mockMvc.perform(get(URL+"pets/42;q=11;r=22"))
-        .andExpect(content().string("1122"))
+                .andExpect(content().string("1122"))
         ;
     }
 
@@ -72,18 +73,58 @@ public class DataRequestTest {
         mockMvc.perform(get(URL+"matrixWithTwoPathVar/a1;a=3/a2;a=4"))
                 .andExpect(content().string("34"))
 
-                ;
+        ;
     }
 
     @Test
     public void requestParamOptional() throws Exception {
 
         mockMvc.perform(post(URL+"requestParamOptional"))
-        .andExpect(content().string("requestParamOptional"))
-                ;
-        mockMvc.perform(post(URL+"requestParamOptional").param("param","me"))
+                .andExpect(content().string("requestParamOptional"))
+        ;
+        mockMvc.perform(post(URL+"requestParamOptional").param("param", "me"))
                 .andExpect(content().string("requestParamOptional-me"))
         ;
-
     }
+
+    @Test
+    public void byHeader() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        mockMvc.perform(get(URL+"byHeader").header("header", MediaType.ALL))
+                .andExpect(content().string("*/*"))
+        ;
+        mockMvc.perform(get(URL + "byHeader"))
+                .andExpect(content().string("none"))
+        ;
+    }
+
+    @Test
+    public void byBody() throws Exception {
+        mockMvc.perform(get(URL+"byBody")
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .content("My body".getBytes())
+        )
+                .andExpect(content().string("My body"))
+        ;
+        mockMvc.perform(get(URL+"byBody"))
+                .andExpect(content().string("none"))
+        ;
+    }
+
+    @Test
+    public void byBodyAndHeader() throws Exception {
+        String header="My_header";
+        String body="My body";
+
+        mockMvc.perform(post(URL+"byBodyAndHeader")
+                        .header("header",header)
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .content(body.getBytes())
+        )
+                .andExpect(content().string(header+" "+body))
+        ;
+    }
+
+
 }

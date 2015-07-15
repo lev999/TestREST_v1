@@ -52,7 +52,27 @@ public class DataRequest {
 
         paramMy.ifPresent(value->out.append("-"+value));
         return out.toString();
+    }
 
+    @RequestMapping(value = "byHeader",method = RequestMethod.GET)
+    public String byHeader(@RequestHeader Optional<String> header){
+        return header.isPresent()?header.get():"none";
+    }
+
+    @RequestMapping(value = "byBody",method = RequestMethod.GET)
+    public String byBody(@RequestBody(required = false) String str){
+        return str!=null?str:"none";
+    }
+    @RequestMapping (
+            value = "byBodyAndHeader",
+            method = RequestMethod.POST,
+            headers = "header=My_header",
+            consumes = MediaType.TEXT_PLAIN_VALUE,
+            produces = MediaType.TEXT_PLAIN_VALUE
+    )
+    public String byBodyAndHeader(@RequestBody String body,@RequestHeader String header )
+    {
+        return header+" "+body;
     }
 
 }
