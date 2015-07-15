@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,4 +75,15 @@ public class DataRequestTest {
                 ;
     }
 
+    @Test
+    public void requestParamOptional() throws Exception {
+
+        mockMvc.perform(post(URL+"requestParamOptional"))
+        .andExpect(content().string("requestParamOptional"))
+                ;
+        mockMvc.perform(post(URL+"requestParamOptional").param("param","me"))
+                .andExpect(content().string("requestParamOptional-me"))
+        ;
+
+    }
 }

@@ -46,4 +46,13 @@ public class DataRequest {
         return a1+a2;
     }
 
+    @RequestMapping(value = "requestParamOptional",method = RequestMethod.POST)
+    public String requestParamOptional(@RequestParam(value = "param",required = false) Optional<String> paramMy){
+        StringBuilder out = new StringBuilder("requestParamOptional");
+
+        paramMy.ifPresent(value->out.append("-"+value));
+        return out.toString();
+
+    }
+
 }
