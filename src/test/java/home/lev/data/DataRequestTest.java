@@ -29,7 +29,7 @@ public class DataRequestTest {
 
     @Before
     public void setUp(){
-         mockMvc = MockMvcBuilders.standaloneSetup(new DataRequest())
+         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .alwaysDo(print())
                 .alwaysExpect(status().isOk())
                 .build();
@@ -47,15 +47,22 @@ public class DataRequestTest {
         mockMvc.perform(get(URL+"manyParamRequest")
         .param("one", "1")
                         .param("two", "2")
-                        .param("three","3")
+                        .param("three", "3")
         )
                 .andExpect(content().string("123"))
                 ;
     }
     @Test
     public void pathParamRequest() throws Exception {
-        mockMvc.perform(get(URL+"pathParamRequest/MyAss/Kiss"))
+        mockMvc.perform(get(URL + "pathParamRequest/MyAss/Kiss"))
                 .andExpect(content().string("Kiss MyAss"))
                 ;
+    }
+
+    @Test
+    public void matrixRequest() throws Exception {
+        mockMvc.perform(get(URL+"pets/42;q=11;r=22"))
+        .andExpect(content().string("4211"))
+        ;
     }
 }

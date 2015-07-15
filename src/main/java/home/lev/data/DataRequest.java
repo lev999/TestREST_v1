@@ -21,4 +21,13 @@ public class DataRequest {
     public String pathParamRequest(@PathVariable(value = "myParam1") String myParamOne, @PathVariable(value = "myParam2") String myParamTwo){
         return myParamTwo+" " +myParamOne;
     }
+
+
+
+    @RequestMapping(value = "/pets/{petId}", method = RequestMethod.GET)
+    public String findPet(@PathVariable String petId, @MatrixVariable int q) {
+        return petId+q;
+        // petId == 42
+        // q == 11
+    }
 }
