@@ -62,7 +62,16 @@ public class DataRequestTest {
     @Test
     public void matrixRequest() throws Exception {
         mockMvc.perform(get(URL+"pets/42;q=11;r=22"))
-        .andExpect(content().string("4211"))
+        .andExpect(content().string("1122"))
         ;
     }
+
+    @Test
+    public void matrixWithTwoPathVar() throws Exception {
+        mockMvc.perform(get(URL+"matrixWithTwoPathVar/a1;a=3/a2;a=4"))
+                .andExpect(content().string("34"))
+
+                ;
+    }
+
 }

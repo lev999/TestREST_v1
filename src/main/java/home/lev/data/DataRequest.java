@@ -1,9 +1,13 @@
 package home.lev.data;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/data")
@@ -25,9 +29,21 @@ public class DataRequest {
 
 
     @RequestMapping(value = "/pets/{petId}", method = RequestMethod.GET)
-    public String findPet(@PathVariable String petId, @MatrixVariable int q) {
-        return petId+q;
+    public String findPet(@PathVariable String petId,
+                          @MatrixVariable(value = "q") int q,
+                          @MatrixVariable(value = "r")int r
+    ) {
+        return String.valueOf(q)+String.valueOf(r);
         // petId == 42
         // q == 11
     }
+
+    @RequestMapping(value = "matrixWithTwoPathVar/{AA1}/{BB1}")
+    public String matrixWithTwoPathVar(
+            @MatrixVariable(pathVar = "AA1", value = "a")String a1,
+            @MatrixVariable(pathVar = "BB1",value = "a")String a2
+    ){
+        return a1+a2;
+    }
+
 }
