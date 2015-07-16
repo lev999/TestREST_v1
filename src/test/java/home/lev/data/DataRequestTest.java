@@ -126,5 +126,14 @@ public class DataRequestTest {
         ;
     }
 
-
+    @Test
+    public void byEntity() throws Exception {
+        mockMvc.perform(post(URL + "byEntity")
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .content("body")
+                        .header("header","this is header")
+        )
+                .andExpect(content().string("body {Content-Type=[text/plain], header=[this is header], Content-Length=[4]}"))
+        ;
+    }
 }

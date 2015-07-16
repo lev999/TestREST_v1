@@ -1,6 +1,7 @@
 package home.lev.data;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,4 +76,8 @@ public class DataRequest {
         return header+" "+body;
     }
 
+    @RequestMapping(value = "byEntity" ,method = RequestMethod.POST,consumes = MediaType.TEXT_PLAIN_VALUE)
+    public String byEntity(HttpEntity<String> entity){
+        return entity.getBody().toString()+" "+entity.getHeaders().toString();
+    }
 }
