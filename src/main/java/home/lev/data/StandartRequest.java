@@ -1,10 +1,14 @@
 package home.lev.data;
 
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.security.Principal;
 import java.util.Locale;
 import java.util.Optional;
@@ -28,5 +32,15 @@ public class StandartRequest {
     @RequestMapping(value = "check",method = RequestMethod.GET)
     public String check(){
         return "check";
+    }
+
+    @RequestMapping(value = "readWithInputStream", method = RequestMethod.POST)
+    public String readWithInputStream(InputStream inputStream) throws IOException {
+        return "readWithInputStream:"+(new String(FileCopyUtils.copyToByteArray(inputStream)));
+    }
+
+    @RequestMapping(value = "readWithReader",method = RequestMethod.POST)
+    public String readWithReader(Reader reader) throws IOException {
+        return "readWithReader:"+ FileCopyUtils.copyToString(reader);
     }
 }
