@@ -70,5 +70,28 @@ public class StandartRequestTest {
         ;
     }
 
+    @Test
+    public void writeResponseWithStream() throws Exception {
+        mockMvc.perform(get(URL + "writeResponseWithStream"))
+                .andExpect(content().string("writeResponseWithStream"))
+        ;
+    }
+
+    @Test
+    public void writeResponseWithWrite() throws Exception {
+        mockMvc.perform(get(URL+"writeResponseWithWrite"))
+                .andExpect(content().string("writeResponseWithWrite"))
+        ;
+    }
+
+    @Test
+    public void getSession() throws Exception {
+        mockMvc.perform(get(URL+"getSession"))
+                .andExpect(content().string(startsWith("getSession")))
+        ;
+    }
+
+
+
 
 }

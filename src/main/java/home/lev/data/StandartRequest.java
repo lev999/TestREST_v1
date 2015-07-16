@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.security.Principal;
 import java.util.Locale;
 import java.util.Optional;
@@ -42,5 +41,20 @@ public class StandartRequest {
     @RequestMapping(value = "readWithReader",method = RequestMethod.POST)
     public String readWithReader(Reader reader) throws IOException {
         return "readWithReader:"+ FileCopyUtils.copyToString(reader);
+    }
+
+    @RequestMapping(value = "writeResponseWithStream", method = RequestMethod.GET)
+    public void writeResponseWithStream(OutputStream outputStream) throws IOException {
+        outputStream.write("writeResponseWithStream".getBytes());
+    }
+
+    @RequestMapping(value = "writeResponseWithWrite",method = RequestMethod.GET)
+    public void writeResponseWithWrite(Writer writer) throws IOException {
+        writer.write("writeResponseWithWrite");
+    }
+
+    @RequestMapping(value = "getSession",method = RequestMethod.GET)
+    public String getSession(HttpSession httpSession){
+        return "getSession:"+httpSession.toString();
     }
 }
