@@ -58,3 +58,4 @@ public class StandartRequest {
         return "getSession:"+httpSession.toString();
     }
 }
+//look https://karthikg.wordpress.com/2009/11/08/learn-to-customize-spring-mvc-controller-method-arguments/
